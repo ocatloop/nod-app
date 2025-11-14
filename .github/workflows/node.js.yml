@@ -9,9 +9,9 @@ permissions:
 
 jobs:
   deploy: 
-    runs-on: self-hosted
+    runs-on: [ self-hosted, shared-runner ]
     steps:
-    - name: check out the code
+    - name: check out the code 
       uses: actions/checkout@v4
     - name: setup environment for application
       run: |
