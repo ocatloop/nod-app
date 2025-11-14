@@ -2,14 +2,14 @@ name: Node.js CI
 
 on:
   push:
-   branches: ["master"]
+    branches: ["master"]
 permissions:
   contents: read
   actions: read
 
 jobs:
   deploy: 
-    runs-on: [ self-hosted, shared-runner ]
+    runs-on: [ self-hosted, shared-runner, Linux, X64 ]
     steps:
     - name: check out the code 
       uses: actions/checkout@v4
