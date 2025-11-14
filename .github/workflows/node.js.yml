@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   deploy: 
-    runs-on: [self-hosted, shared-runner] 
+    runs-on: self-hosted
     steps:
     - name: check out the code 
       uses: actions/checkout@v4
