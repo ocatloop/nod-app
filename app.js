@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   // Send a simple JSON response
   res.status(200).json({
     status: 'success',
-    message: 'Welcome to the simple Node.js API! Try POSTing to, test the files does it fetch new feature /data.',
+    message: 'Welcome to the simple Node.js API! Try POSTing to, test the files does it fetch new feature /data.  new change adde for test',
     available_routes: ['GET /', 'POST /data']
   });
 });
