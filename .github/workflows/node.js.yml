@@ -19,7 +19,7 @@ jobs:
         sudo docker build -t myapp .
         sudo docker images
           if [ "$(sudo docker ps  -aq -f name=node-app)" ]; then
-           sudo docker rm -f my-app-container
+           sudo docker rm -f node-app
           fi
 
         sudo docker run -p 3000:3000 -d --name node-app --restart unless-stopped  myapp 
