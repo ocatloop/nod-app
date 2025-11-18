@@ -67,20 +67,23 @@ jobs:
           if [ "$(sudo docker ps  -aq -f name=node-app-dev)" ]; then
             sudo docker rm -f node-app-dev 
             sudo docker rmi myapp-dev
-          elif [ "$(sudo docker ps  -aq -f name=node-app-stage)" ]; then
+          else
+            echo "No dev server is runing"
+            
+          if [ "$(sudo docker ps  -aq -f name=node-app-stage)" ]; then
             sudo docker rm -f node-app-stage 
             sudo docker rmi myapp-stage
           else
-            echo "No dev or stage app is runing, i am removing becuase i am usign same server"
+            echo "no stage server is runing"
           fi
           
           if [ "$(sudo docker ps  -aq -f name=node-app-prod)" ]; then
             sudo docker rm -f node-app-prod 
             sudo docker rmi myapp-prod
           fi 
-          sudo docker build -t myapp-prod .
-          sudo docker run -p 3000:3000 -d --name node-app-prod --restart unless-stopped  myapp-prod 
-          echo "successfully deployed to production server"
+           sudo docker build -t myapp-prod .
+           sudo docker run -p 3000:3000 -d --name node-app-prod --restart unless-stopped  myapp-prod 
+           echo "successfully deployed to production server"
 
       
     
