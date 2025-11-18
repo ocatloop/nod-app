@@ -2,14 +2,16 @@ name: Node.js CI
 
 on:
   push:
-    branches: ["staging"]
+    branches: ["stage", "master", "dev"]
 permissions:
   contents: read
   actions: read
 
 jobs:
-  deploy: 
+  deploy_to_dev: 
     runs-on: dev
+    environment: dev
+    if: github.ref=='refs/heads/dev'
     steps:
     - name: check out the code 
       uses: actions/checkout@v4
@@ -22,11 +24,47 @@ jobs:
            sudo docker rm -f node-app
           fi
 
-        sudo docker run -p 3000:3000 -d --name node-app --restart unless-stopped  myapp 
+        sudo docker run -p 8080:3000 -d --name node-app  myapp 
         
     - name: done
       run: |
-        echo "app started succssfully"
+        echo "app deployed on dev  succssfully"
+     
+  deploy_to_stage:
+      runs-on: dev
+      environment: stage 
+      needs: deploy_to_dev
+      if: github.ref=='refs/heads/stage'
+      steps:
+      - name: check out the code 
+        uses: actions/checkout@v4
+      - name: deploy to stage server 
+        run: |
+          sudo docker build -t myapp .
+          if [ "$(sudo docker ps  -aq -f name=node-app)" ]; then
+            sudo docker rm -f node-app 
+          fi 
+          sudo docker run -p 8080:3000 -d --name node-app   myapp
+          echo "successfully deployed to staging server"
 
-        
-   
+  deploy_to_prod:
+      runs-on: dev
+      environment: prod
+      needs: deploy_to_stage
+      if: github.ref=='refs/heads/master'
+      steps:
+      - name: check out the code 
+        uses: actions/checkout@v4
+      - name: deploy to stage server 
+        run:
+          sudo docker build -t myapp .
+          if [ "$(sudo docker ps  -aq -f name=node-app)" ]; then
+            sudo docker rm -f node-app 
+          fi 
+          sudo docker run -p 3000:3000 -d --name node-app --restart unless-stopped  myapp
+          echo "successfully deployed to production server"
+
+      
+    
+       
+          
