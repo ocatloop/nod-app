@@ -63,8 +63,7 @@ jobs:
         uses: actions/checkout@v4
       - name: deploy to production server 
         run: |
-          sudo docker build -t myapp-prod .
-
+        
           if [ "$(sudo docker ps  -aq -f name=node-prod-dev)" ]; then
             sudo docker rm -f node-prod-dev 
             sudo docker rmi myapp-dev
@@ -79,7 +78,7 @@ jobs:
             sudo docker rm -f node-prod-app 
             sudo docker rmi myapp-prod
           fi 
-         
+          sudo docker build -t myapp-prod .
           sudo docker run -p 3000:3000 -d --name node-prod-app --restart unless-stopped  myapp-prod 
           echo "successfully deployed to production server"
 
