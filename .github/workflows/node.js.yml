@@ -35,7 +35,7 @@ jobs:
   deploy_to_stage:
       runs-on: dev
       environment: stage 
-      needs: deploy_to_dev
+      
       if: github.ref=='refs/heads/stage'
       steps:
       - name: check out the code 
@@ -52,7 +52,7 @@ jobs:
   deploy_to_prod:
       runs-on: dev
       environment: prod
-      needs: deploy_to_stage
+      
       if: github.ref=='refs/heads/master'
       steps:
       - name: check out the code 
